@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!-- Beer Distribution Game Simulator. Licensed under MIT license. Copyright (c) 2016-2017 Miron Vranjes. All Rights Reserved -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Beer Distribution Game Simulator">
+  <meta name="author" content="Miron Vranjes">
+
+  <title>Administrator - Beer Distribution Game</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+    crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+    crossorigin="anonymous">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <!-- The admin source -->
+  <script src="admin.js"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Beer Distribution Game <small>Beta</small></h2>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" id="role">Administration Panel</div>
+          <button type="button" class="btn btn-success navbar-btn" id="btnStartGame">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Start Game
+            </button>
+          <button type="button" class="btn btn-warning navbar-btn" id="btnEndGame">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> End
+            </button>
+          <button type="button" class="btn btn-danger navbar-btn" id="btnResetGame">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Reset
+            </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="alert alert-danger collapse" role="alert" id="gameStartError">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span id="errorText">The game could not be started, please try again.</span>
+    </div>
+
+    <p id="status">You have not started the game.</p>
+
+    <div class="panel panel-default" id="charts">
+      <div class="panel-heading">Charts</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="chartGroup" class="col-sm-6 control-label">Group #:</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="chartGroup">
+  <option>1</option>
+</select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="chartType" class="col-sm-6 control-label">Type:</label>
+                <div class="col-sm-6">
+                  <select class="form-control" id="chartType">
+  <option value="Cost">Cost</option>
+  <option value="Inventory">Inventory</option>
+  <option value="Orders">Orders</option>
+</select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-9">
+            <div id="groupChart" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default" id="grouppanel">
+    <div class="panel-heading">Groups</div>
+
+    <!-- This is where you update the names of the groups -->
+    <table class="table" id="grouptable">
+      <thead>
+        <tr>
+          <th id="groupRank">Group #</th>
+          <th>Retailer</th>
+          <th>Wholesaler</th>
+          <th>Regional Warehouse</th>
+          <th>Factory</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Please enter the admin password</h4>
+        </div>
+        <div class="modal-body">
+          <p>In order to access the administration panel, you must enter your password. Good luck!</p>
+          <div class="alert alert-danger collapse" role="alert" id="wrongPassword">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> Your password was incorrect! Please try again.
+          </div>
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">
+               <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+            </span>
+            <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1" id="formPassword">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="btnAdmin">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

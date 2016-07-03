@@ -1,0 +1,16 @@
+{
+  "name": "beerdistribution",
+  "version": "1.0.0",
+  "description": "Beer Distribution Game Simulator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Miron Vranjes",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.4.8"
+  }
+}
