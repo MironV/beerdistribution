@@ -8,6 +8,8 @@ All the game requires is a Node server to run (i.e., you can just upload to a He
 ### Overview ###
 The source code is pretty simple. The server is wholly contained in `index.js` and the client is in `/public`, split into the user side (`client.js` and `index.html`) and admin side (`admin.html` and `admin.js`). There's a couple of font styles contained in `style.css`.
 
+This code uses the excellent [animate.css](http://daneden.me/animate), [CountUp.js](https://inorganik.github.io/countUp.js/), and [Bootstrap Validator](http://1000hz.github.io/bootstrap-validator/) libraries.
+
 ## Game ##
 ### Setup ###
 Once the server is running, users can connect using a desktop or mobile browser. They must create a unique username at which point they are assigned to a group. To prevent collusion that could ruin the simulation, users don't see who else is in their group until the end.
