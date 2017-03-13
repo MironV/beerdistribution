@@ -27,6 +27,7 @@ coverage
 build/Release
 
 # Dependency directories
+.vscode
 node_modules
 jspm_packages
 
