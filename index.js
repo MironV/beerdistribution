@@ -44,7 +44,7 @@ var starting_throughput = 4;
 var customer_demand = [4, 8, 12, 16, 20];
 
 // This controls how the roles are labeled
-var BEER_NAMES = ["Retailer", "Wholesaler", "Regional Warehouse", "Factory"];
+var BEER_NAMES = ["零售商", "分销商", "批发商", "啤酒公司"];
 
 // This is what stores all the role data during the game
 var ROLE_0 = {
